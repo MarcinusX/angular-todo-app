@@ -1,0 +1,74 @@
+<mat-accordion>
+
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              New task
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+    <form (ngSubmit)="onSubmit()">
+      <mat-card-title>New task</mat-card-title>
+      <mat-form-field appearance="outline" class="tasksInput">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="task.title" name="title">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="tasksInput">
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="task.description" name="description">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker1" placeholder="Deadline" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <div align="end">
+        <button mat-raised-button color="primary" type="submit">Dodaj</button>
+      </div>
+    </form>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              Search
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+    <form (ngSubmit)="onSubmitSearch()">
+      <mat-form-field appearance="outline" class="tasksInput">
+        <mat-label>Search text</mat-label>
+        <input matInput [(ngModel)]="search" name="search">
+      </mat-form-field>
+      <span>From</span>
+      <mat-form-field class="simpleMargin">
+        <input matInput [matDatepicker]="searchFromPicker" placeholder="start date" [formControl]="searcFromhDate">
+        <mat-datepicker-toggle matSuffix [for]="searchFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #searchFromPicker></mat-datepicker>
+      </mat-form-field>
+      <span >to</span>
+      <mat-form-field class="simpleMargin">
+        <input matInput [matDatepicker]="searchToPicker" placeholder="end date" [formControl]="searchToDate">
+        <mat-datepicker-toggle matSuffix [for]="searchToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #searchToPicker></mat-datepicker>
+      </mat-form-field>
+      <div align="end">
+        <button mat-raised-button color="accent" ng-click="clear()" class="simpleMargin">Clear</button>
+        <button mat-raised-button color="primary" type="submit">Search</button>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-card class="mCard">
+  <mat-card-title>Tasks</mat-card-title>
+  <mat-selection-list>
+    <mat-list-option *ngFor="let task of tasks" checkboxPosition="before" [selected]="task.completed" (click)="onTaskCheck(task)">
+      <p matLine>
+        <span> {{task.title}}</span>
+        <span class="right"> {{task.deadline | date: 'dd MMMM yyyy'}}</span>
+      </p>
+      <p matLine>
+        <span> {{task.description}} </span>
+      </p>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-card>
