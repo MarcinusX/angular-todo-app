@@ -16,7 +16,6 @@ export class TasksComponent implements OnInit {
   tasks: Task[];
   date = new FormControl();// = new FormControl(new Date());
   search = "";
-  searchFromDate = new FormControl();
   searchToDate = new FormControl();
 
   constructor(private tasksService: TasksService) {
@@ -30,7 +29,13 @@ export class TasksComponent implements OnInit {
   getTasks() {
     this.tasksService.getTasks().subscribe(tasks => {
       this.tasks = tasks;
-      this.tasks.sort((a, b) => a.completed - b.completed);
+      this.tasks.sort((a, b) => {
+        if (a.completed) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     });
   }
 
@@ -46,28 +51,35 @@ export class TasksComponent implements OnInit {
   onSubmit() {
     // alert("Thanks for submitting! Data: " + JSON.stringify(this.task));
     this.task.completed = false;
+    this.task.id = "";
     if (this.date.value) {
       this.task.deadline = (this.date.value as Date).getTime();
     }
-    console.log(this.date.value);
     this.tasksService.postTask(this.task).subscribe(result => {
-      this.getTasks();
+      this.clear();
     })
   }
 
   onSubmitSearch() {
     this.tasksService
-      .getTasksWithParams(this.search, this.searchFromDate.value, this.searchToDate.value)
+      .getTasksWithParams(this.search, this.searchToDate.value)
       .subscribe(tasks => {
         this.tasks = tasks;
-        this.tasks.sort((a, b) => a.completed - b.completed);
+        this.tasks.sort((a, b) => {
+          if (a.completed) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
       })
   }
 
   clear() {
     this.getTasks();
+    this.date = new FormControl();
+    this.task = new Task();
     this.search = "";
-    this.searchFromDate = new FormControl();
     this.searchToDate = new FormControl();
   }
 

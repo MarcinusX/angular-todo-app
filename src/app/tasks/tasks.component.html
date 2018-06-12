@@ -39,13 +39,7 @@
         <mat-label>Search text</mat-label>
         <input matInput [(ngModel)]="search" name="search">
       </mat-form-field>
-      <span>From</span>
-      <mat-form-field class="simpleMargin">
-        <input matInput [matDatepicker]="searchFromPicker" placeholder="start date" [formControl]="searcFromhDate">
-        <mat-datepicker-toggle matSuffix [for]="searchFromPicker"></mat-datepicker-toggle>
-        <mat-datepicker #searchFromPicker></mat-datepicker>
-      </mat-form-field>
-      <span >to</span>
+      <span >Deadline to</span>
       <mat-form-field class="simpleMargin">
         <input matInput [matDatepicker]="searchToPicker" placeholder="end date" [formControl]="searchToDate">
         <mat-datepicker-toggle matSuffix [for]="searchToPicker"></mat-datepicker-toggle>

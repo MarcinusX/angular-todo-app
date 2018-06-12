@@ -28,17 +28,20 @@ export class TasksService {
   return this.http.put<Task>(this.url, task, this.httpOptions);
   }
 
-  getTasksWithParams(text: string, fromDate: Date, toDate: Date): Observable<Task[]> {
-    let params = new HttpParams();
+  getTasksWithParams(text: string, maxDate: Date): Observable<Task[]> {
+    let params = []
     if (text) {
-      params.set("text", text);
+      params.push({
+        'pattern': text,
+        'filterType': 'PhraseFilter',
+      });
     }
-    if (fromDate) {
-      params.set("fromDate", fromDate.getTime.toString());
+    if (maxDate) {
+      params.push({
+        'maxDate': maxDate.getTime(),
+        'filterType': 'DeadlineFilter',
+      });
     }
-    if (toDate) {
-      params.set("toDate", toDate.getTime.toString());
-    }
-    return this.http.get<Task[]>(this.url, {params: params});
+    return this.http.post<Task[]>(this.url+'/filtered', params);
   }
 }
